@@ -1,6 +1,6 @@
 # CSC 225 — Graph Search: BFS and DFS
 
-**Name:** YOUR NAME HERE
+**Name:** Alec Segur
 
 This assignment introduces graph representation and two ways to search a graph: depth-first search (DFS) and breadth-first search (BFS).
 
@@ -44,11 +44,11 @@ Open `graph.py`. Implement:
 
 **Question 1.** Why does adding an undirected edge require updating two adjacency lists?
 
-YOUR ANSWER HERE
+Because the graph is undirected, the connection goes both ways. If you can travel from u to v, you also have to be able to travel back from v to u, so both vertices need each other in their neighbor lists.
 
 **Question 2.** What is one advantage of an adjacency list over an adjacency matrix for a graph with relatively few edges?
 
-YOUR ANSWER HERE
+An adjacency list saves a lot of memory on sparse graphs. Instead of storing a full V x V grid filled mostly with zeros for connections that don't exist, it only stores the vertices and the actual edges between them.
 
 ### Part 2 — Depth-first search (DFS)
 
@@ -64,11 +64,11 @@ Suggested approach:
 
 **Question 3.** What prevents DFS from visiting vertices forever when a graph contains a cycle?
 
-YOUR ANSWER HERE
+The visited set keeps track of every vertex we've already been to. Before making a recursive call on a neighbor, the code checks if it's in visited. If it is, it skips it instead of looping around the cycle infinitely.
 
 **Question 4.** Starting at `A` in Graph 1 below, write the DFS visit order. Explain where DFS first needs to backtrack.
 
-YOUR ANSWER HERE
+The DFS visit order is A, B, D, E, F, C. DFS first needs to backtrack at vertex D, because D's only neighbor is B, which has already been visited. From D, it backtracks to B and moves on to E.
 
 ### Part 3 — Breadth-first search (BFS)
 
@@ -84,11 +84,15 @@ Suggested approach:
 
 **Question 5.** Why should BFS mark a neighbor visited when it is **enqueued**, rather than waiting until it is removed from the queue?
 
-YOUR ANSWER HERE
+If you wait until a vertex is popped from the queue to mark it visited, two different vertices already in the queue could see the same unvisited neighbor and both add it. Marking it visited as soon as it's enqueued prevents duplicates from getting into the queue.
 
 **Question 6.** Starting at `A` in Graph 1, write the BFS visit order and list the queue contents immediately after processing `A` and immediately after processing `B`.
 
-YOUR ANSWER HERE
+The BFS visit order is A, B, C, D, E, F.
+
+Queue immediately after processing A: ['B', 'C']
+
+Queue immediately after processing B: ['C', 'D', 'E']
 
 ### Part 4 — Test your code
 
@@ -132,15 +136,15 @@ Tests also check neighbor lists and duplicate-edge handling. **Do not modify `te
 
 **Question 7.** Why do searches starting at `A` in Graph 3 not visit `X`, `Y`, or `Z`?
 
-YOUR ANSWER HERE
+Graph 3 is disconnected, meaning there are no edges linking the A-B-C component to X-Y or Z. Since both BFS and DFS only follow edges from reachable neighbors, they can't jump across to separate components.
 
 **Question 8.** Suppose every edge has the same cost. Which search is useful for finding a path with the fewest edges from a starting vertex: DFS or BFS? Why?
 
-YOUR ANSWER HERE
+BFS is better for finding the path with the fewest edges because it explores the graph level by level. It checks every vertex 1 edge away before moving on to vertices 2 edges away, guaranteeing the first time it hits a target is along the shortest path.
 
 **Question 9.** After your program works, describe one difference between the orders produced by DFS and BFS on Graph 1.
 
-YOUR ANSWER HERE
+On Graph 1, DFS dives deep down one branch first—going from B to E to F to C before finishing; whereas BFS visits all of A's immediate neighbors (B and C) before moving out to the next layer (D, E, F).
 
 ### Part 5 — Optional visualization (not graded)
 
