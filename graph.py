@@ -8,33 +8,44 @@ class Graph:
         self.adj = {}
 
     def add_vertex(self, v):
-        # TODO: If v is not already in the dictionary, add v with an empty list.
-        pass
+        if v not in self.adj:
+            self.adj[v] = []
 
     def add_edge(self, u, v):
-        # TODO: Add both vertices (if necessary).
-        # TODO: Add v to u's list, unless it is already there.
-        # TODO: Add u to v's list, unless it is already there.
-        # Assume u != v. The graph is undirected.
-        pass
+        self.add_vertex(u)
+        self.add_vertex(v)
+        if v not in self.adj[u]:
+            self.adj[u].append(v)
+        if u not in self.adj[v]:
+            self.adj[v].append(u)
 
     def dfs(self, start):
         """Return a DFS visitation list starting at start."""
-        # TODO: Make an empty visited set and an empty order list.
-        # TODO: Define a recursive helper that visits a vertex and its
-        #       unvisited neighbors in their stored order.
-        # TODO: Start the helper at start and return order.
-        # Assume start exists in self.adj.
-        pass
+        visited = set()
+        order = []
+
+        def helper(u):
+            visited.add(u)
+            order.append(u)
+            for neighbor in self.adj[u]:
+                if neighbor not in visited:
+                    helper(neighbor)
+
+        helper(start)
+        return order
 
     def bfs(self, start):
         """Return a BFS visitation list starting at start."""
-        # TODO: Make an empty visited set, an empty order list, and a queue
-        #       using deque imported from collections at the top of this file.
-        # TODO: Add start to the queue and mark it visited immediately.
-        # TODO: While the queue is not empty, remove the first vertex,
-        #       append it to order, and enqueue any unvisited neighbors.
-        #       Mark neighbors visited when they enter the queue.
-        # TODO: Return order.
-        # Assume start exists in self.adj.
-        pass
+        visited = {start}
+        order = []
+        queue = deque([start])
+
+        while queue:
+            u = queue.popleft()
+            order.append(u)
+            for neighbor in self.adj[u]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+        return order
